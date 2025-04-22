@@ -7,35 +7,16 @@ public class NumberBlock : MonoBehaviour
 {
     [SerializeField] private Transform _transform;
 
-    private readonly float _leftOffset = 0.1f;
-    private readonly float _rightOffset = 0.9f;
-
-    private Camera _mainCamera;
-    private float _downDistance;
-    private float _downDuration;
-
-    private void Awake()
-    {
-        SetNumberBlock();
-    }
+    public Transform Transform { get { return _transform; } }
 
     private void SetNumberBlock()
     {
-        if (_mainCamera == null)
-            _mainCamera = Camera.main;
 
-        float randomX = Random.Range(_leftOffset, _rightOffset);
-        var pos = _mainCamera.ViewportToWorldPoint(new Vector3(randomX, 1f, 0f));
-        pos.z = 0f;
-        _transform.position = pos;
-
-        _downDistance = pos.y - _mainCamera.ViewportToWorldPoint(new Vector3(0f, 0f, 0f)).y;
-        _downDuration = 10f;
     }
 
-    private void Start()
+    public void StartMoveDown(float distance, float duration)
     {
-        _transform.DOMoveY(transform.position.y - _downDistance, _downDuration)
+        _transform.DOMoveY(transform.position.y - distance, duration)
                 .SetEase(Ease.Linear);
     }
 }
