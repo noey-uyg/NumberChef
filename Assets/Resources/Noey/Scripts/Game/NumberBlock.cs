@@ -13,6 +13,7 @@ public class NumberBlock : MonoBehaviour
     private int _num;
 
     public Transform Transform { get { return _transform; } }
+    public int Number { get { return _num; } }
 
     public void SetNumberBlock(int num, Color color)
     {
@@ -23,7 +24,7 @@ public class NumberBlock : MonoBehaviour
 
     public void StartMoveDown(float distance, float duration)
     {
-        _transform.DOMoveY(transform.position.y - distance, duration)
+        _transform.DOMoveY(_transform.position.y - distance, duration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {
