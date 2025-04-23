@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transform: {fileID: 2896053512393915951}
+  _spriteRenderer: {fileID: 2896053512393915936}
+  _numText: {fileID: 2896053512544868025}
 --- !u!1 &2896053512544868027
 GameObject:
   m_ObjectHideFlags: 0

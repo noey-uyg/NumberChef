@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class GameManager : DontDestroySingleton<GameManager>
 {
-
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+        Application.targetFrameRate = 60;
+    }
 }

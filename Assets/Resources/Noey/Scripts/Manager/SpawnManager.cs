@@ -6,18 +6,29 @@ public class SpawnManager : Singleton<SpawnManager>
 {
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private Transform _transform;
+    [SerializeField] Color[] _colors;
 
     private readonly float _leftOffset = 0.1f;
     private readonly float _rightOffset = 0.9f;
 
-    private float _spawnDuration;
+    private WaitForSeconds _spawnDuration = new WaitForSeconds(1f);
     private float _downDistance;
     private float _downDuration;
 
-    public void Update()
+    private float _minNum=1;
+    private float _maxNum=100;
+
+    public void Start()
     {
-        if (Input.GetMouseButtonDown(0))
+        StartCoroutine(IEStartSpawn());
+    }
+
+    IEnumerator IEStartSpawn()
+    {
+        while (true)
         {
+            yield return _spawnDuration;
+
             SpawnNumberBlock();
         }
     }
@@ -32,9 +43,13 @@ public class SpawnManager : Singleton<SpawnManager>
         _downDistance = spawnPos.y - _mainCamera.ViewportToWorldPoint(new Vector3(0f, 0f, 0f)).y;
         _downDuration = 15f;
 
+        int randomNum = (int)Random.Range(_minNum, _maxNum+1);
+        int randomColor = (int)Random.Range(0, _colors.Length);
+
         NumberBlock numberBlock = NumberBlockPool.Instance.GetNumberBlock();
         numberBlock.Transform.position = spawnPos;
         numberBlock.Transform.SetParent(_transform);
+        numberBlock.SetNumberBlock(randomNum, _colors[randomColor]);
         numberBlock.StartMoveDown(_downDistance, _downDuration);
     }
 }
