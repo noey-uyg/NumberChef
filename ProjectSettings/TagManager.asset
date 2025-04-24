@@ -6,11 +6,12 @@ TagManager:
   tags:
   - StaticUICamera
   - DynamicUICamera
+  - PopupUICamera
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PopupUI
   - Water
   - UI
   - StaticUI
