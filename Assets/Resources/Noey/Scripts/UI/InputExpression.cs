@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEditor;
+using System.Text;
 
 public enum LastInputType { None, Nubmer, Operator }
 
@@ -10,10 +11,9 @@ public class InputExpression : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _inputText;
     [SerializeField] private List<NumberButton> _numberButtons;
 
-    private string _expression = "";
+    private StringBuilder _expressionBuilder = new StringBuilder();
     private LastInputType _lastInputType = LastInputType.None;
     private HashSet<int> uniqueNumbers = new HashSet<int>();
-    private Vector3[] _bottomCorners = new Vector3[4];
 
     public LastInputType LastInputType { get { return _lastInputType; }}
 
@@ -45,15 +45,15 @@ public class InputExpression : MonoBehaviour
 
     public void OnNumberClicked(int number)
     {
-        _expression += number.ToString();
-        _inputText.text = _expression;
+        _expressionBuilder.Append(number.ToString());
+        UpdateInputField();
         _lastInputType = LastInputType.Nubmer;
     }
 
     public void OnOperatorClicked(string op)
     {
-        _expression += $" {op} ";
-        _inputText.text = _expression;
+        _expressionBuilder.Append(op);
+        UpdateInputField();
         _lastInputType = LastInputType.Operator;
     }
 
@@ -63,6 +63,7 @@ public class InputExpression : MonoBehaviour
         {
             _numberButtons[i].ResetState();
         }
+
         ClearExpression();
         _lastInputType = LastInputType.None;
     }
@@ -71,24 +72,26 @@ public class InputExpression : MonoBehaviour
     {
         try
         {
-            ExpressionEvaluator.Evaluate(_expression, out int result);
-            Debug.Log(result);
-            //BlockManager.Instance.TryRemoveBlockWithValue(result);
+            string expression = _expressionBuilder.ToString();
+            ExpressionEvaluator.Evaluate(expression, out int result);
+            BlockManager.Instance.MatchNumberBlock(result);
             OnClear();
+            _lastInputType = LastInputType.None;
         }
         catch
         {
-            Debug.Log("Invalid Expression");
-            return;
+            Debug.Log("잘못된 연산식");
         }
-
-        OnClear();
-        _lastInputType = LastInputType.None;
     }
 
     private void ClearExpression()
     {
-        _expression = "";
-        _inputText.text = "";
+        _expressionBuilder.Clear();
+        UpdateInputField();
+    }
+
+    private void UpdateInputField()
+    {
+        _inputText.text = _expressionBuilder.ToString();
     }
 }

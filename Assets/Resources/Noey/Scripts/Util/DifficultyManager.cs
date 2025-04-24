@@ -15,12 +15,12 @@ public static class DifficultyManager
 
     public static float GetCurrentDownDuration()
     {
-        return Mathf.Max(3f, 15f - ElapsedTime * 0.01f);
+        return Mathf.Max(3f, 25f - ElapsedTime * 0.01f);
     }
 
     public static float GetCurrentSpawnDuration()
     {
-        return Mathf.Max(1f, 2f - ElapsedTime * 0.005f);
+        return Mathf.Max(1f, 3f - ElapsedTime * 0.005f);
     }
 
     public static int GetCurrentMinNumber()
@@ -30,7 +30,7 @@ public static class DifficultyManager
 
     public static int GetCurrentMaxNumber()
     {
-        return Mathf.Min(500, 100 + (int)(ElapsedTime * 0.5f));
+        return Mathf.Min(500, 50 + (int)(ElapsedTime * 0.5f));
     }
 
     public static void Reset()

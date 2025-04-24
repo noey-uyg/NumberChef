@@ -42,7 +42,6 @@ public class BlockManager : Singleton<BlockManager>
 
         if (_lastSpawnTime >= _spawnDuration)
         {
-            Debug.Log($"spawn : {_spawnDuration}");
             _spawnDuration = DifficultyManager.GetCurrentSpawnDuration();
             SpawnNumberBlock();
             _lastSpawnTime = 0;
@@ -59,13 +58,11 @@ public class BlockManager : Singleton<BlockManager>
         _downDistance = spawnPos.y - _deadLine;
         _downDuration = DifficultyManager.GetCurrentDownDuration();
 
-        Debug.Log($"Duration : {_downDuration}");
-        Debug.Log($"Min : {DifficultyManager.GetCurrentMinNumber()}, Max : {DifficultyManager.GetCurrentMaxNumber()}");
-
         int randomNum = (int)Random.Range(
             DifficultyManager.GetCurrentMinNumber(),
             DifficultyManager.GetCurrentMaxNumber()+1
             );
+
         int randomColor = (int)Random.Range(0, _colors.Length);
 
         NumberBlock numberBlock = NumberBlockPool.Instance.GetNumberBlock();
@@ -75,5 +72,22 @@ public class BlockManager : Singleton<BlockManager>
         numberBlock.StartMoveDown(_downDistance, _downDuration);
 
         _blocks.Add(numberBlock);
+    }
+
+    int score = 0;
+
+    public void MatchNumberBlock(int result)
+    {
+        for(int i = 0; i < _blocks.Count; i++)
+        {
+            if (_blocks[i].Number == result)
+            {
+                _blocks[i].Match();
+                _blocks.RemoveAt(i);
+                score++;
+                Debug.Log(score);
+                break;
+            }
+        }
     }
 }
