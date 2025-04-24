@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,8 +24,6 @@ public class BlockManager : Singleton<BlockManager>
         Vector3[] deadLineCorners = new Vector3[4];
         _deadLineRect.GetWorldCorners(deadLineCorners);
         _deadLine = deadLineCorners[1].y;
-
-        GameManager.Instance.StartGame();
     }
 
     private void Update()
