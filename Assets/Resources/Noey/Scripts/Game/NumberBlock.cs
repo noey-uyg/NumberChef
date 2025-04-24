@@ -21,6 +21,8 @@ public class NumberBlock : MonoBehaviour
         _num = num;
         _numText.text = num.ToString();
         _spriteRenderer.color = color;
+
+        GameManager.Instance.OnStateChanged += GameStateChange;
     }
 
     public void StartMoveDown(float distance, float duration)
@@ -35,6 +37,7 @@ public class NumberBlock : MonoBehaviour
                 .OnComplete(() =>
                 {
                     NumberBlockPool.Instance.ReleaseNumberBlock(this);
+                    GameManager.Instance.OnStateChanged -= GameStateChange;
                 });
     }
 
@@ -46,5 +49,26 @@ public class NumberBlock : MonoBehaviour
         }
 
         NumberBlockPool.Instance.ReleaseNumberBlock(this);
+        GameManager.Instance.OnStateChanged -= GameStateChange;
+    }
+
+    private void GameStateChange(GameManager.GameState state)
+    {
+        if (_moveYTween == null || !_moveYTween.IsActive())
+            return;
+
+        switch (state)
+        {
+            case GameManager.GameState.Paused:
+                {
+                    _moveYTween.Pause();
+                }
+                break;
+            case GameManager.GameState.Playing:
+                {
+                    _moveYTween.Play();
+                }
+                break;
+        }
     }
 }

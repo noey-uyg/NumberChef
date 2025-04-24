@@ -1,0 +1,23 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PauseButton : ButtonBase
+{
+    protected override void OnClicked()
+    {
+        switch (GameManager.Instance.CurrentState)
+        {
+            case GameManager.GameState.Playing:
+                {
+                    GameManager.Instance.SetGameState(GameManager.GameState.Paused);
+                }
+                break;
+            case GameManager.GameState.Paused:
+                {
+                    GameManager.Instance.SetGameState(GameManager.GameState.Playing);
+                }
+                break;
+        }
+    }
+}

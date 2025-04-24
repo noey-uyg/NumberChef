@@ -17,10 +17,8 @@ public class BlockManager : Singleton<BlockManager>
     private float _deadLine;
     private float _downDistance;
     private float _downDuration;
-    private float _spawnDuration;
+    private float _spawnDuration = 0f;
     private float _lastSpawnTime = 0f;
-
-    private bool _gameStart;
 
     private void Start()
     {
@@ -28,15 +26,12 @@ public class BlockManager : Singleton<BlockManager>
         _deadLineRect.GetWorldCorners(deadLineCorners);
         _deadLine = deadLineCorners[1].y;
 
-        _gameStart = true;
-        ScoreManager.Reset();
-        DifficultyManager.Start();
-        _spawnDuration = DifficultyManager.GetCurrentSpawnDuration();
+        GameManager.Instance.StartGame();
     }
 
     private void Update()
     {
-        if (!_gameStart)
+        if (GameManager.Instance.CurrentState != GameManager.GameState.Playing)
             return;
 
         _lastSpawnTime += Time.deltaTime;
