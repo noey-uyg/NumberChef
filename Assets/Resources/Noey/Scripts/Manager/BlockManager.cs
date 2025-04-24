@@ -83,7 +83,6 @@ public class BlockManager : Singleton<BlockManager>
             {
                 _blocks[i].Match();
                 _blocks.RemoveAt(i);
-                ScoreManager.AddScore(1);
                 break;
             }
         }
