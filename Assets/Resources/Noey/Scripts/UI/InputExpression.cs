@@ -9,6 +9,7 @@ public enum LastInputType { None, Nubmer, Operator }
 public class InputExpression : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _inputText;
+    [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private List<NumberButton> _numberButtons;
 
     private StringBuilder _expressionBuilder = new StringBuilder();
@@ -20,6 +21,7 @@ public class InputExpression : MonoBehaviour
     private void Start()
     {
         GenerateUniqueNumbers();
+        ScoreManager.OnUpdateScore += UpdateScore;
     }
 
     private void GenerateUniqueNumbers()
@@ -93,5 +95,10 @@ public class InputExpression : MonoBehaviour
     private void UpdateInputField()
     {
         _inputText.text = _expressionBuilder.ToString();
+    }
+
+    private void UpdateScore(int score)
+    {
+        _scoreText.text = score.ToString();
     }
 }

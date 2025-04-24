@@ -29,6 +29,7 @@ public class BlockManager : Singleton<BlockManager>
         _deadLine = deadLineCorners[1].y;
 
         _gameStart = true;
+        ScoreManager.Reset();
         DifficultyManager.Start();
         _spawnDuration = DifficultyManager.GetCurrentSpawnDuration();
     }
@@ -74,8 +75,6 @@ public class BlockManager : Singleton<BlockManager>
         _blocks.Add(numberBlock);
     }
 
-    int score = 0;
-
     public void MatchNumberBlock(int result)
     {
         for(int i = 0; i < _blocks.Count; i++)
@@ -84,8 +83,7 @@ public class BlockManager : Singleton<BlockManager>
             {
                 _blocks[i].Match();
                 _blocks.RemoveAt(i);
-                score++;
-                Debug.Log(score);
+                ScoreManager.AddScore(1);
                 break;
             }
         }
