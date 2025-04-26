@@ -12,7 +12,6 @@ public class PopupManager : Singleton<PopupManager>
 
     public void ShowPopup<T>(Action<T> onInit = null) where T : PopupBase
     {
-        Debug.Log("asd");
         T prefab = GetPopupPrefab<T>();
         if (prefab == null)
         {
