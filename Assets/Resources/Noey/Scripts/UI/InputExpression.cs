@@ -77,8 +77,7 @@ public class InputExpression : MonoBehaviour
             string expression = _expressionBuilder.ToString();
             ExpressionEvaluator.Evaluate(expression, out int result);
 
-            BlockManager.Instance.MatchNumberBlock(result);
-            ScoreManager.AddScore(expression);
+            BlockManager.Instance.MatchNumberBlock(result, expression);
 
             OnClear();
             _lastInputType = LastInputType.None;

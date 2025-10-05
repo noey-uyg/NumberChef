@@ -67,12 +67,13 @@ public class BlockManager : Singleton<BlockManager>
         _blocks.Add(numberBlock);
     }
 
-    public void MatchNumberBlock(int result)
+    public void MatchNumberBlock(int result, string expression)
     {
         for(int i = 0; i < _blocks.Count; i++)
         {
             if (_blocks[i].Number == result)
             {
+                ScoreManager.AddScore(expression);
                 _blocks[i].Match();
                 _blocks.RemoveAt(i);
                 break;

@@ -36,6 +36,7 @@ public class NumberBlock : MonoBehaviour
                 {
                     NumberBlockPool.Instance.ReleaseNumberBlock(this);
                     GameManager.Instance.OnStateChanged -= GameStateChange;
+                    GameManager.Instance.SetGameState(GameManager.GameState.GameOver);
                 });
     }
 
