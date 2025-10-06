@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEditor;
 using System.Text;
+using System.Threading.Tasks;
 
 public enum LastInputType { None, Nubmer, Operator }
 
@@ -16,12 +17,75 @@ public class InputExpression : MonoBehaviour
     private LastInputType _lastInputType = LastInputType.None;
     private HashSet<int> uniqueNumbers = new HashSet<int>();
 
+    private bool _autoSolving = false;
+    private bool _autoPlaying = false;
+    private bool _autoSubmit = false;
+
     public LastInputType LastInputType { get { return _lastInputType; }}
 
     private void Start()
     {
         GenerateUniqueNumbers();
         ScoreManager.OnUpdateScore += UpdateScore;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            _autoPlaying = !_autoPlaying;
+        }
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            _autoSubmit = !_autoSubmit;
+        }
+
+        if (_autoSolving || !_autoPlaying) return;
+        if (GameManager.Instance.CurrentState != GameManager.GameState.Playing) return;
+
+        if (!string.IsNullOrEmpty(_inputText.text))
+            return;
+
+        if(BlockManager.Instance.Blocks.Count > 0)
+        {
+            int target = BlockManager.Instance.Blocks[0].Number;
+            _ = AutoSolveAndSubmit(target);
+        }
+    }
+
+    private async Task AutoSolveAndSubmit(int target)
+    {
+        _autoSolving = true;
+        Debug.Log($"[Auto]{target}... Find expression");
+
+        string expr = await ExpressionGenerator.GenerateExpressionAsync(target);
+
+        if (!string.IsNullOrEmpty(expr))
+        {
+            Debug.Log($"[Auto] Find expression for {target}: {expr}");
+            AutoInputAndSubmit(expr);
+        }
+        else
+        {
+            Debug.LogWarning($"[Auto] Failed to find expression for {target}");
+        }
+
+        _autoSolving = false;
+    }
+
+    public void AutoInputAndSubmit(string expression)
+    {
+        if (string.IsNullOrEmpty(expression))
+            return;
+
+        _expressionBuilder.Clear();
+        _expressionBuilder.Append(expression);
+        UpdateInputField();
+
+        if (_autoSubmit)
+        {
+            OnSubmit();
+        }
     }
 
     private void GenerateUniqueNumbers()
@@ -47,6 +111,8 @@ public class InputExpression : MonoBehaviour
 
     public void OnNumberClicked(int number)
     {
+        if (_autoPlaying) return;
+
         _expressionBuilder.Append(number.ToString());
         UpdateInputField();
         _lastInputType = LastInputType.Nubmer;
@@ -54,6 +120,8 @@ public class InputExpression : MonoBehaviour
 
     public void OnOperatorClicked(string op)
     {
+        if (_autoPlaying) return;
+
         _expressionBuilder.Append(op);
         UpdateInputField();
         _lastInputType = LastInputType.Operator;

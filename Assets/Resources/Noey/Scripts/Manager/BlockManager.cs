@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class BlockManager : Singleton<BlockManager>
@@ -18,6 +19,8 @@ public class BlockManager : Singleton<BlockManager>
     private float _downDuration;
     private float _spawnDuration = 0f;
     private float _lastSpawnTime = 0f;
+
+    public List<NumberBlock> Blocks { get { return _blocks; } }
 
     private void Start()
     {
