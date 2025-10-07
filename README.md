@@ -2,7 +2,7 @@
 
 **Number Chef**는 숫자와 연산자를 이용해 퍼즐을 푸는 Unity 기반의 연산 퍼즐 게임입니다.
 
-플레이어는 주어진 숫자와 연산을 입력하여 목표값을 만들거나 조건을 만족시켜 레벨을 클리어합니다.
+플레이어는 주어진 숫자와 연산을 입력하여 목표값을 만들어 높은 점수를 획득해야 합니다.
 
 <img src="https://github.com/user-attachments/assets/c3b0518c-4eec-4666-923e-c13ef1eb7a3b" 
      alt="NumberChef Game" 
